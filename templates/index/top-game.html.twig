@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Top game{% endblock %}
+
+{% block body %}
+    <h1>Top game</h1>
+    <p>My favourite game is {{ topGames|first }}</p>
+{% endblock %}

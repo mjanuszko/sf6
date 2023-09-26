@@ -15,9 +15,10 @@
         <header>
             <nav>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">O nas</a></li>
-                    <li><a href="#">Kontakt</a></li>
+                    <li><a href="{{ path('index.home') }}">Home</a></li>
+                    <li><a href="{{ path('index.about') }}">O nas</a></li>
+                    <li><a href="{{ path('index.hello', {'firstName': 'Michał'}) }}">Hello</a></li>
+                    <li><a href="{{ path('index.top-game') }}">Top game</a></li>
                 </ul>
             </nav>
         </header>

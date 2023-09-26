@@ -1,10 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
+    <h2>Hello {{ firstName|capitalize }}!</h2>
+    <h3>Favourite games:</h3>
+    <ul>
+        {% for game in favouriteGames %}
+            <li>{{ game }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
 
 {% block title %}
-
+Hello {{ firstName|capitalize }}!
 {% endblock %}
 
