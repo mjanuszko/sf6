@@ -2,7 +2,60 @@
 
 namespace App\Controller;
 
-class IndexController
-{
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
+class IndexController extends  AbstractController
+{
+    #[Route('/', name: 'index.home')]
+    public function home(): Response
+    {
+        return $this->render('index/home.html.twig');
+    }
+
+    #[Route('/about', name: 'index.about')]
+    public function about(): Response
+    {
+        return $this->render('index/about.html.twig');
+    }
+
+    #[Route('/hello/{firstName}', name: 'index.hello', methods: ['GET'])]
+    public function hello(string $firstName = 'Guest'): Response
+    {
+        $favouriteGames = [
+            'Witcher 3',
+            'Skyrim'
+        ];
+
+        return $this->render('index/hello.html.twig', [
+            'firstName' => $firstName,
+            'favouriteGames' => $favouriteGames
+        ]);
+    }
+
+    #[Route('/top', name: 'index.top')]
+    public function top()
+    {
+        $topGames = [
+            'Witcher 3',
+            'Skyrim'
+        ];
+
+        return new JsonResponse($topGames);
+    }
+
+    #[Route('/top-game', name: 'index.top-game')]
+    public function topGame(): Response
+    {
+        $topGames = [
+            'Witcher 3',
+            'Skyrim'
+        ];
+
+        return $this->render('index/top-game.html.twig', [
+            'topGames' => $topGames
+        ]);
+    }
 }
