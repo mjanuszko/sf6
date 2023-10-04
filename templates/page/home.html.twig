@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{{ data['title'] }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ data['title'] }}</h1>
+    <p>{{ data['date']|date('Y-m-d H:i:s') }}</p>
+
+    <div>
+        <ul>
+            {% for message in data['messages'] %}
+                <li>{{ message.id }}: {{ message.text }} (autor: {{ message.author }})</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <p>
+            {% for number in data['numbers'] %}
+                {{ number }},
+            {% endfor %}
+        </p>
+    </div>
+
+    <div>
+        <p>{{ data['weather']['temperature'] }} stopni, {{ data['weather']['condition'] }}</p>
+    </div>
+
+    <div>
+        <p>Użytkownik {{ data['isPremiumUser'] ? 'Premium' : 'Standard' }}</p>
+    </div>
+
+    <div>
+        <p>{{ data['user']['name'] }} ({{ data['user']['email'] }})</p>
+    </div>
+
+    <div>
+        <p>Wyświetlania: {{ data['pageViews'] }}</p>
+    </div>
+
+    <div>
+        <p>Tagi: {% for tag in data['popularTags'] %}
+            {{ tag }},
+            {% endfor %}
+        </p>
+    </div>
+
+    <div>
+        <p>Rating: {{ data['rating'] }}</p>
+    </div>
+{% endblock %}

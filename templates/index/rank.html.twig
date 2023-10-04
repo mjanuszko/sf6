@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h3>Best games:</h3>
+    <ol>
+        {% for game in gameRank %}
+            <li>{{ game }}</li>
+        {% endfor %}
+    </ol>
+{% endblock %}
+
+{% block title %}
+    Game Rank
+{% endblock %}
+
