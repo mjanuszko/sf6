@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Games
+{% endblock %}
+
+{% block body %}
+    <h2>List of games</h2>
+    <ul>
+        {% for game in games %}
+            <li>
+                <a href="{{ path('app_game_show', {id: game.id}) }}">{{ game.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
