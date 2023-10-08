@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>{{ game.name }}</h2>
+    <p>{{ game.description }}</p>
+    <p>Category: {{ game.category.name }}</p>
+    <p>Score: <strong>{{ game.score }}/10</strong></p>
+    <p>Release date: {{ game.releaseDate | date('Y-m-d') }}</p>
+{% endblock %}
+
+{% block title %}
+    {{ game.name }}
+{% endblock %}
+

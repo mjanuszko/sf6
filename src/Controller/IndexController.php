@@ -25,7 +25,7 @@ class IndexController extends  AbstractController
     }
 
     #[Route('/code', name: 'index.code')]
-    public function code(Filesystem $filesystem, CodeGenerator $codeGenerator): Response
+    public function code(CodeGenerator $codeGenerator): Response
     {
         $code = $codeGenerator->generate();
 
