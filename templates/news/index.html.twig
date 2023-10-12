@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Game News{% endblock %}
+
+{% block body %}
+    <h2>Game News</h2>
+
+    <ul>
+        {% for article in newsArticles %}
+            <li>
+                <a href="{{ path('app_news_show', { 'id': article.id }) }}">
+                    {{ article.title }}
+                </a>
+                <p>{{ article.content }}</p>
+                {% for comment in article.comments %}
+                    <p>- {{ comment.user }}: {{ comment.content }}</p>
+                {% endfor %}
+            </li>
+        {% else %}
+            <li>No articles found.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
