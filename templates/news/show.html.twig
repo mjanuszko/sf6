@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>{{ newsArticle.title }}</h2>
+    <p>{{ newsArticle.publicationTime | date('Y-m-d H:i') }}</p>
+    <p>{{ newsArticle.content }}</p>
+    {% for comment in newsArticle.comments %}
+        <p>- {{ comment.user }}: {{ comment.content }}</p>
+    {% endfor %}
+{% endblock %}
+
+{% block title %}
+{{ newsArticle.title }}
+{% endblock %}
+
