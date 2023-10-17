@@ -7,9 +7,11 @@ use App\DTO\CreateArticleRequestDto;
 use App\DTO\UpdateArticleRequestDto;
 use App\Entity\Comment;
 use App\Entity\NewsArticle;
+use App\Form\NewsArticleType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -23,6 +25,48 @@ class NewsController extends AbstractController
 
         return $this->render('news/index.html.twig', [
             'newsArticles' => $newsArticles,
+        ]);
+    }
+
+    #[Route('/news/new', name: 'app_news_new')]
+    public function new(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $newsArticle = new NewsArticle();
+        $form = $this->createForm(NewsArticleType::class, $newsArticle);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newsArticle = $form->getData();
+            $newsArticle->setPublicationTime(new \DateTime());
+            $entityManager->getRepository(NewsArticle::class)->save($newsArticle);
+
+            $this->addFlash('success', 'News article created!');
+
+            return $this->redirectToRoute('app_news_show', ['id' => $newsArticle->getId()]);
+        }
+
+        return $this->render('news/new.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/news/edit/{id}', name: 'app_news_edit')]
+    public function edit(NewsArticle $newsArticle, EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $form = $this->createForm(NewsArticleType::class, $newsArticle);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newsArticle = $form->getData();
+            $entityManager->getRepository(NewsArticle::class)->save($newsArticle);
+
+            $this->addFlash('success', 'News article updated!');
+
+            return $this->redirectToRoute('app_news_show', ['id' => $newsArticle->getId()]);
+        }
+
+        return $this->render('news/edit.html.twig', [
+            'form' => $form,
         ]);
     }
 
@@ -42,8 +86,8 @@ class NewsController extends AbstractController
         return new JsonResponse(['id' => $article->getId()]);
     }
 
-    #[Route('/api/news/{id}', name: 'app_news_edit', methods: ['PUT'])]
-    public function edit(EntityManagerInterface $entityManager, int $id, #[MapRequestPayload] UpdateArticleRequestDto $articleDto): JsonResponse
+    #[Route('/api/news/{id}', name: 'app_news_post', methods: ['PUT'])]
+    public function post(EntityManagerInterface $entityManager, int $id, #[MapRequestPayload] UpdateArticleRequestDto $articleDto): JsonResponse
     {
         $article = $entityManager->getRepository(NewsArticle::class)->find($id);
         if (!$article) {

@@ -10,7 +10,7 @@
             <li>
                 <a href="{{ path('app_news_show', { 'id': article.id }) }}">
                     {{ article.title }}
-                </a>
+                </a> - <a href="{{ path('app_news_edit', { 'id': article.id }) }}">Edit</a>
                 <p>{{ article.content }}</p>
                 {% for comment in article.comments %}
                     <p>- {{ comment.user }}: {{ comment.content }}</p>
