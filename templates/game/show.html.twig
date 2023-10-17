@@ -3,7 +3,9 @@
 {% block body %}
     <h2>{{ game.name }}</h2>
     <p>{{ game.description }}</p>
-    <p>Category: {{ game.category.name }}</p>
+    {% if game.category %}
+        <p>Category: {{ game.category.name }}</p>
+    {% endif %}
     <p>Score: <strong>{{ game.score }}/10</strong></p>
     <p>Release date: {{ game.releaseDate | date('Y-m-d') }}</p>
 {% endblock %}
