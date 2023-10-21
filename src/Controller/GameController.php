@@ -20,6 +20,8 @@ class GameController extends AbstractController
     #[Route('/games', name: 'app_game_list')]
     public function list(EntityManagerInterface $entityManager): Response
     {
+        $this->DenyAccessUnlessGranted('ROLE_USER');
+
         $games = $entityManager->getRepository(Game::class)->findAll();
 
         return $this->render('game/list.html.twig', [
@@ -40,6 +42,8 @@ class GameController extends AbstractController
     #[Route('/game/new', name: 'app_game_new')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
+        $this->DenyAccessUnlessGranted('ROLE_ADD');
+
         $game = new Game();
         $form = $this->createForm(GameType::class, $game);
 
@@ -62,6 +66,8 @@ class GameController extends AbstractController
     #[Route('/game/edit/{id}', name: 'app_game_edit')]
     public function edit(Game $game, EntityManagerInterface $entityManager, Request $request): Response
     {
+        $this->DenyAccessUnlessGranted('ROLE_EDIT');
+
         $form = $this->createForm(GameType::class, $game);
 
         $form->handleRequest($request);
