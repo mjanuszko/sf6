@@ -8,6 +8,7 @@ use App\DTO\UpdateArticleRequestDto;
 use App\Entity\Comment;
 use App\Entity\NewsArticle;
 use App\Form\NewsArticleType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,13 +32,15 @@ class NewsController extends AbstractController
     #[Route('/news/new', name: 'app_news_new')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADD');
+
         $newsArticle = new NewsArticle();
         $form = $this->createForm(NewsArticleType::class, $newsArticle);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $newsArticle = $form->getData();
-            $newsArticle->setPublicationTime(new \DateTime());
+            $newsArticle->setPublicationTime(new DateTime());
             $entityManager->getRepository(NewsArticle::class)->save($newsArticle);
 
             $this->addFlash('success', 'News article created!');
@@ -53,6 +56,8 @@ class NewsController extends AbstractController
     #[Route('/news/edit/{id}', name: 'app_news_edit')]
     public function edit(NewsArticle $newsArticle, EntityManagerInterface $entityManager, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_EDIT');
+
         $form = $this->createForm(NewsArticleType::class, $newsArticle);
 
         $form->handleRequest($request);
@@ -155,7 +160,7 @@ class NewsController extends AbstractController
         $article = new NewsArticle();
         $article->setTitle($articleDto->title);
         $article->setContent($articleDto->content);
-        $article->setPublicationTime(new \DateTime());
+        $article->setPublicationTime(new DateTime());
         return $article;
     }
 

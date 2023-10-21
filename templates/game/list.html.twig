@@ -9,7 +9,10 @@
     <ul>
         {% for game in games %}
             <li>
-                <a href="{{ path('app_game_show', {id: game.id}) }}">{{ game.name }}</a> - <a href="{{ path('app_game_edit', {id: game.id}) }}">edit</a>
+                <a href="{{ path('app_game_show', {id: game.id}) }}">{{ game.name }}</a>
+                {% if is_granted('ROLE_EDIT') %}
+                - <a href="{{ path('app_game_edit', {id: game.id}) }}">edit</a>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>
