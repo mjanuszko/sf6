@@ -6,23 +6,22 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class CodeGenerator
 {
-    private Filesystem $filesystem;
-    private string $codePrefix;
-
     /**
      * CodeGenerator constructor.
      * @param Filesystem $filesystem
      * @param string $codePrefix
+     * @param CodeCreator $codeCreator
      */
-    public function __construct(Filesystem $filesystem, string $codePrefix)
+    public function __construct(
+        private Filesystem $filesystem,
+        private string $codePrefix,
+        private CodeCreator $codeCreator)
     {
-        $this->filesystem = $filesystem;
-        $this->codePrefix = $codePrefix;
     }
 
     public function generate(): string
     {
-        $code = $this->codePrefix . rand(10000, 99999);
+        $code = $this->codeCreator->createCode($this->codePrefix);
 
         $this->filesystem->mkdir('codes');
         $this->filesystem->touch('codes/'.$code.'.txt');
