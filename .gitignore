@@ -11,3 +11,10 @@
 ###< symfony/framework-bundle ###
 
 .idea/
+
+###> phpunit/phpunit ###
+/phpunit.xml
+/.phpunit.result.cache
+/.env.test
+/.env.test.local
+###< phpunit/phpunit ###
