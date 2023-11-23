@@ -32,3 +32,15 @@ services:
     App\Service\GameRankGenerator:
         arguments:
             $listOfGames: ['Witcher 3', 'Skyrim', 'GTA V', 'Fallout 4', 'Diablo III', 'Cyberpunk 2077', 'Destiny 2', 'Persona 5', 'Red Dead Redemption 2', 'The Last Of Us']
+
+#    App\EventListener\TrafficListener:
+#        tags:
+#            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    App\Subscriber\TrafficSubscriber: ~
+
+    App\Service\CodeCreatorDecorator:
+        decorates: App\Service\CodeCreator
+
+    App\Service\CodeGeneratorDecorator:
+        decorates: App\Service\CodeGenerator

@@ -15,7 +15,7 @@ class CodeGenerator
     public function __construct(
         private Filesystem $filesystem,
         private string $codePrefix,
-        private CodeCreator $codeCreator)
+        private CodeCreatorDecorator $codeCreator)
     {
     }
 
