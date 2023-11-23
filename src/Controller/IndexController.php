@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Message\SendKey;
 use App\Service\CodeGenerator;
 use App\Service\GameRankGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends  AbstractController
@@ -30,6 +32,18 @@ class IndexController extends  AbstractController
         $code = $codeGenerator->generate();
 
         return $this->render('index/code.html.twig', ['code' => $code]);
+    }
+
+    #[Route('/sendKey', name: 'index.sendKey')]
+    public function sendKey(MessageBusInterface $bus): JsonResponse
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return new JsonResponse(['status' => 'User not found.'], Response::HTTP_NOT_FOUND);
+        }
+
+        $bus->dispatch(new SendKey($user->getId()));
+        return new JsonResponse(['status' => 'Email sent.']);
     }
 
     #[Route('/rank', name: 'index.rank')]
