@@ -11,9 +11,12 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class GameController extends AbstractController
 {
@@ -109,5 +112,17 @@ class GameController extends AbstractController
         $entityManager->flush();
 
         return new Response('Deleted game with id: ' . $id);
+    }
+
+    #[Route('/pokemons', name: 'app_game_pokemons')]
+    public function pokemons(CacheInterface $cache): JsonResponse
+    {
+        $pokemon = $cache->get('pokemon', function (ItemInterface $item) {
+            $item->expiresAfter(3600);
+
+            return file_get_contents('https://pokeapi.co/api/v2/pokemon/1');
+        });
+
+        return new JsonResponse($pokemon);
     }
 }
